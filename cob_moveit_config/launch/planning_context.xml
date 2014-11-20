@@ -16,5 +16,10 @@
   <group ns="robot_description_planning">    
     <rosparam command="load" file="$(arg config_path)/joint_limits.yaml"/>
   </group>
+
+  <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
+  <group ns="robot_description_kinematics">
+    <rosparam command="load" file="$(arg config_path)/kinematics.yaml"/>
+  </group>
   
 </launch>
