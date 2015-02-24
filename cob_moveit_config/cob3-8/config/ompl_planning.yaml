@@ -21,6 +21,7 @@ planner_configs:
     type: geometric::PRM
   PRMstarkConfigDefault:
     type: geometric::PRMstar
+    #range: .2
 arm:
   planner_configs:
     - SBLkConfigDefault
@@ -35,7 +36,7 @@ arm:
     - PRMkConfigDefault
     - PRMstarkConfigDefault
   projection_evaluator: joints(arm_1_joint,arm_2_joint)
-  longest_valid_segment_fraction: 0.05
+  longest_valid_segment_fraction: 0.01
 torso:
   planner_configs:
     - SBLkConfigDefault
@@ -49,8 +50,19 @@ torso:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
-  projection_evaluator: joints(torso_lower_neck_tilt_joint,torso_pan_joint)
-  longest_valid_segment_fraction: 0.05
+gripper:
+  planner_configs:
+    - SBLkConfigDefault
+    - ESTkConfigDefault
+    - LBKPIECEkConfigDefault
+    - BKPIECEkConfigDefault
+    - KPIECEkConfigDefault
+    - RRTkConfigDefault
+    - RRTConnectkConfigDefault
+    - RRTstarkConfigDefault
+    - TRRTkConfigDefault
+    - PRMkConfigDefault
+    - PRMstarkConfigDefault
 lookat:
   planner_configs:
     - SBLkConfigDefault
@@ -64,9 +76,7 @@ lookat:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
-  projection_evaluator: joints(torso_lower_neck_tilt_joint,torso_pan_joint)
-  longest_valid_segment_fraction: 0.05
-gripper:
+base:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault

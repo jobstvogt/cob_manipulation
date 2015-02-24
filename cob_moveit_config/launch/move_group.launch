@@ -39,7 +39,7 @@
   <!-- rosparam delete /move_group/sensors -->
 
   <param name="move_group/octomap_frame" type="string" value="odom_combined" />
-  <param name="move_group/octomap_resolution" type="double" value="0.05" />
+  <param name="move_group/octomap_resolution" type="double" value="0.04" />
   <param name="move_group/max_range" type="double" value="2.0" />
   <rosparam file="$(arg config_path)/sensor_kinect.yaml" ns="move_group"/>
 

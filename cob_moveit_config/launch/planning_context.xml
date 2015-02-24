@@ -15,6 +15,7 @@
   <!-- Load to the parameter server yaml files -->
   <group ns="robot_description_planning">    
     <rosparam command="load" file="$(arg config_path)/joint_limits.yaml"/>
+    <rosparam command="load" file="$(arg config_path)/paddings.yaml"/>
   </group>
 
   <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
