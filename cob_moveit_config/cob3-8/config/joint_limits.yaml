@@ -1,0 +1,81 @@
+joint_limits:
+  arm_1_joint:
+    has_velocity_limits: true
+    max_velocity: 0.43633
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_2_joint:
+    has_velocity_limits: true
+    max_velocity: 0.43633
+    has_acceleration_limits: false
+    max_acceleration: 0
+  lookat_y_joint:
+    has_velocity_limits: true
+    max_velocity: 1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  lookat_z_joint:
+    has_velocity_limits: true
+    max_velocity: 1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pg70_finger_left_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pg70_finger_right_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_4_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_3_joint:
+    has_velocity_limits: true
+    max_velocity: 0.4189
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_5_joint:
+    has_velocity_limits: true
+    max_velocity: 0.43633
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_6_joint:
+    has_velocity_limits: true
+    max_velocity: 1.2566
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_7_joint:
+    has_velocity_limits: true
+    max_velocity: 1.2566
+    has_acceleration_limits: false
+    max_acceleration: 0
+  torso_lower_neck_tilt_joint:
+    has_velocity_limits: true
+    max_velocity: 0.5
+    has_acceleration_limits: false
+    max_acceleration: 0
+  torso_upper_neck_tilt_joint:
+    has_velocity_limits: true
+    max_velocity: 0.5
+    has_acceleration_limits: false
+    max_acceleration: 0
+  lookat_lin_joint:
+    has_velocity_limits: true
+    max_velocity: 1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  lookat_x_joint:
+    has_velocity_limits: true
+    max_velocity: 1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  torso_pan_joint:
+    has_velocity_limits: true
+    max_velocity: 0.5
+    has_acceleration_limits: false
+    max_acceleration: 0

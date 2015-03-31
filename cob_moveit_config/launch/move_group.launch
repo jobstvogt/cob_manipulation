@@ -3,10 +3,10 @@
   <arg name="robot" default="$(env ROBOT)"/>
   <arg name="config_path" default="$(find cob_moveit_config)/$(arg robot)/config"/>
 
+  <!--param name="moveit/robot_description" command="$(find xacro)/xacro.py '$(arg config_path)/description.urdf.xacro'" /-->
   <arg name="pipeline" default="ompl" />
 
-  <!-- GDB Debug Option -->
-  <arg name="debug" default="false" />
+  <arg name="debug" default="true" />
   <arg unless="$(arg debug)" name="launch_prefix" value="" />
   <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
 
@@ -40,12 +40,10 @@
   <!-- Sensors Functionality -->
   <!-- IMPORTANT: To disable, you must manually remove the paramater from the parameter server -->
   <!-- rosparam delete /move_group/sensors -->
-<!--
-  <rosparam file="$(arg config_path)/sensor_kinect.yaml" ns="move_group"/>
   <param name="move_group/octomap_frame" type="string" value="odom_combined" />
-  <param name="move_group/octomap_resolution" type="double" value="0.1" />
+  <param name="move_group/octomap_resolution" type="double" value="0.04" />
   <param name="move_group/max_range" type="double" value="2.0" />
--->
+
 
   <!-- Start the actual move_group node/action server -->
   <node name="move_group" launch-prefix="$(arg launch_prefix)" pkg="moveit_ros_move_group" type="move_group" respawn="false" output="screen" args="$(arg command_args)">
