@@ -52,6 +52,8 @@
 
 // Need a floating point tolerance when checking joint limits, in case the joint starts at limit
 const double LIMIT_TOLERANCE = .0000001;
+/// \brief Search modes for searchPositionIK(), see there
+enum SEARCH_MODE { OPTIMIZE_FREE_JOINT=1, OPTIMIZE_MAX_JOINT=2 };
 
 namespace ikfast_kinematics_plugin
 {
@@ -299,7 +301,7 @@ bool IKFastKinematicsPlugin::initialize(const std::string &robot_description,
 
   ROS_DEBUG_STREAM_NAMED("ikfast","Reading joints and links from URDF");
 
-  boost::shared_ptr<urdf::Link> link = boost::const_pointer_cast<urdf::Link>(robot_model.getLink(tip_frame_));
+  boost::shared_ptr<urdf::Link> link = boost::const_pointer_cast<urdf::Link>(robot_model.getLink(getTipFrame()));
   while(link->name != base_frame_ && joint_names_.size() <= num_joints_)
   {
     ROS_DEBUG_NAMED("ikfast","Link %s",link->name.c_str());
@@ -387,7 +389,8 @@ int IKFastKinematicsPlugin::solve(KDL::Frame &pose_frame, const std::vector<doub
   switch (GetIkType())
   {
     case IKP_Transform6D:
-      // For **Transform6D**, eerot is 9 values for the 3x3 rotation matrix.
+    case IKP_Translation3D:
+      // For **Transform6D**, eerot is 9 values for the 3x3 rotation matrix. For **Translation3D**, these are ignored.
 
       mult = pose_frame.M;
 
@@ -428,7 +431,6 @@ int IKFastKinematicsPlugin::solve(KDL::Frame &pose_frame, const std::vector<doub
       return 0;
 
     case IKP_Rotation3D:
-    case IKP_Translation3D:
     case IKP_Lookat3D:
     case IKP_TranslationXY2D:
     case IKP_TranslationXYOrientation3D:
@@ -578,10 +580,10 @@ bool IKFastKinematicsPlugin::getPositionFK(const std::vector<std::string> &link_
                                            const std::vector<double> &joint_angles,
                                            std::vector<geometry_msgs::Pose> &poses) const
 {
-#ifndef IKTYPE_TRANSFORM_6D
-  ROS_ERROR_NAMED("ikfast", "Can only compute FK for IKTYPE_TRANSFORM_6D!");
-  return false;
-#endif
+  if (GetIkType() != IKP_Transform6D) {
+    ROS_ERROR_NAMED("ikfast", "Can only compute FK for IKTYPE_TRANSFORM_6D!");
+    return false;
+  }
 
   KDL::Frame p_out;
   if(link_names.size() == 0) {
@@ -589,8 +591,8 @@ bool IKFastKinematicsPlugin::getPositionFK(const std::vector<std::string> &link_
     return false;
   }
 
-  if(link_names.size()!=1 || link_names[0]!=tip_frame_){
-    ROS_ERROR_NAMED("ikfast","Can compute FK for %s only",tip_frame_.c_str());
+  if(link_names.size()!=1 || link_names[0]!=getTipFrame()){
+    ROS_ERROR_NAMED("ikfast","Can compute FK for %s only",getTipFrame().c_str());
     return false;
   }
 
@@ -684,6 +686,9 @@ bool IKFastKinematicsPlugin::searchPositionIK(const geometry_msgs::Pose &ik_pose
                                               const kinematics::KinematicsQueryOptions &options) const
 {
   ROS_DEBUG_STREAM_NAMED("ikfast","searchPositionIK");
+
+  /// search_mode is currently fixed during code generation
+  SEARCH_MODE search_mode = OPTIMIZE_MAX_JOINT;
 
   // Check if there are no redundant joints
   if(free_params_.size()==0)
@@ -782,6 +787,12 @@ bool IKFastKinematicsPlugin::searchPositionIK(const geometry_msgs::Pose &ik_pose
   // Begin searching
 
   ROS_DEBUG_STREAM_NAMED("ikfast","Free param is " << free_params_[0] << " initial guess is " << initial_guess << ", # positive increments: " << num_positive_increments << ", # negative increments: " << num_negative_increments);
+  if ((search_mode & OPTIMIZE_MAX_JOINT) && (num_positive_increments + num_negative_increments) > 1000)
+      ROS_WARN_STREAM_ONCE_NAMED("ikfast", "Large search space, consider increasing the search discretization");
+  
+  double best_costs = -1.0;
+  std::vector<double> best_solution;
+  int nattempts = 0, nvalid = 0;
 
   while(true)
   {
@@ -796,6 +807,7 @@ bool IKFastKinematicsPlugin::searchPositionIK(const geometry_msgs::Pose &ik_pose
     {
       for(int s = 0; s < numsol; ++s)
       {
+        nattempts++;
         std::vector<double> sol;
         getSolution(solutions,s,sol);
 
@@ -825,23 +837,52 @@ bool IKFastKinematicsPlugin::searchPositionIK(const geometry_msgs::Pose &ik_pose
 
           if(error_code.val == error_code.SUCCESS)
           {
-            return true;
+            nvalid++;
+            if (search_mode & OPTIMIZE_MAX_JOINT)
+            {
+              // Costs for solution: Largest joint motion
+              double costs = 0.0;
+              for(unsigned int i = 0; i < solution.size(); i++)
+              {
+                double d = fabs(ik_seed_state[i] - solution[i]);
+                if (d > costs)
+                  costs = d;
+              }
+              if (costs < best_costs || best_costs == -1.0)
+              {
+                best_costs = costs;
+                best_solution = solution;
+              }
+            }
+            else
+              // Return first feasible solution
+              return true;
           }
         }
       }
     }
 
-    if(!getCount(counter, num_positive_increments, num_negative_increments))
+    if(!getCount(counter, num_positive_increments, -num_negative_increments))
     {
+      // Everything searched
       error_code.val = moveit_msgs::MoveItErrorCodes::NO_IK_SOLUTION;
-      return false;
+      break;
     }
 
     vfree[0] = initial_guess+search_discretization_*counter;
-    ROS_DEBUG_STREAM_NAMED("ikfast","Attempt " << counter << " with 0th free joint having value " << vfree[0]);
+    //ROS_DEBUG_STREAM_NAMED("ikfast","Attempt " << counter << " with 0th free joint having value " << vfree[0]);
   }
 
-  // not really needed b/c shouldn't ever get here
+  ROS_DEBUG_STREAM_NAMED("ikfast", "Valid solutions: " << nvalid << "/" << nattempts);
+
+  if ((search_mode & OPTIMIZE_MAX_JOINT) && best_costs != -1.0)
+  {
+    solution = best_solution;
+    error_code.val = error_code.SUCCESS;
+    return true;
+  }
+
+  // No solution found
   error_code.val = moveit_msgs::MoveItErrorCodes::NO_IK_SOLUTION;
   return false;
 }

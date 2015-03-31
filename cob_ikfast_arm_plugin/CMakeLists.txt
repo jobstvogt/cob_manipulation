@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(cob_ikfast_arm_plugin)
 
-find_package(Eigen REQUIRED)
-include_directories(SYSTEM ${EIGEN_INCLUDE_DIRS})
-
 find_package(catkin REQUIRED COMPONENTS
   moveit_core
   pluginlib
@@ -12,7 +9,6 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 include_directories(${catkin_INCLUDE_DIRS})
-link_directories(${catkin_LIBRARY_DIRS})
 
 catkin_package(
   LIBRARIES
@@ -36,7 +32,7 @@ install(TARGETS ${IKFAST_LIBRARY_NAME} LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_
 
 install(
   FILES
-  cob3-8_moveit_ikfast_plugin_description.xml
+  cob3-8_arm_moveit_ikfast_plugin_description.xml
   DESTINATION
   ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

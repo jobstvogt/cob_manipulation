@@ -148,6 +148,15 @@
         <joint name="arm_6_joint" value="1.0285" />
         <joint name="arm_7_joint" value="-1.5616" />
     </group_state>
+    <group_state name="open_fridge" group="arm">
+        <joint name="arm_1_joint" value="-0.9721" />
+        <joint name="arm_2_joint" value="-1.9146" />
+        <joint name="arm_3_joint" value="1.3019" />
+        <joint name="arm_4_joint" value="1.6336" />
+        <joint name="arm_5_joint" value="-2.0759" />
+        <joint name="arm_6_joint" value="-1.3192" />
+        <joint name="arm_7_joint" value="0.4319" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="torso_ee" parent_link="torso_upper_neck_tilt_link" group="torso" />
     <end_effector name="lookat_ee" parent_link="lookat_focus_frame" group="lookat" />

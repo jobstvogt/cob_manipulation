@@ -36,7 +36,7 @@ arm:
     - PRMkConfigDefault
     - PRMstarkConfigDefault
   projection_evaluator: joints(arm_1_joint,arm_2_joint)
-  longest_valid_segment_fraction: 0.01
+  longest_valid_segment_fraction: 0.02
 torso:
   planner_configs:
     - SBLkConfigDefault

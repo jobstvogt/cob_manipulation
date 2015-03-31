@@ -1,1 +1,1 @@
-rosrun moveit_ikfast create_ikfast_moveit_plugin.py cob3-8 arm cob_ikfast_arm_plugin /u/robot/git/care-o-bot/src/cob_ikfast_arm_plugin/src/cob3-8_arm_ikfast_solver.cpp
+rosrun moveit_ikfast create_ikfast_moveit_plugin.py cob3-8 arm cob_ikfast_arm_plugin /home/autopnp/dev/bennet/catkin_ws/src/cob/cob_manipulation/cob_ikfast_arm_plugin/src/cob3-8_arm_ikfast_solver.cpp
