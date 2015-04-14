@@ -11,7 +11,7 @@ sensors:
    image_topic: /cam3d/depth_registered/image_raw
    queue_size: 5
    near_clipping_plane_distance: 0.3
-   far_clipping_plane_distance: 5.0
+   far_clipping_plane_distance: 2.0
    skip_vertical_pixels: 1
    skip_horizontal_pixels: 1
    shadow_threshold: 0.2
