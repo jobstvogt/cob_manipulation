@@ -111,14 +111,16 @@
         <joint name="torso_upper_neck_tilt_joint" value="-0.78" />
     </group_state>
     <group_state name="pregrasp" group="arm">
-        <joint name="arm_1_joint" value="2.2567" />
-        <joint name="arm_2_joint" value="0.6222" />
-        <joint name="arm_3_joint" value="-1.0204" />
-        <joint name="arm_4_joint" value="2.1212" />
+        <joint name="arm_1_joint" value="2.7081" />
+        <joint name="arm_2_joint" value="1.9864" />
+        <joint name="arm_3_joint" value="-0.8444" />
+        <joint name="arm_4_joint" value="1.9262" />
         <joint name="arm_5_joint" value="-0.2111" />
         <joint name="arm_6_joint" value="-1.2521" />
         <joint name="arm_7_joint" value="0.0997" />
     </group_state>
+
+
     <group_state name="back_up" group="torso">
         <joint name="torso_lower_neck_tilt_joint" value="0.1" />
         <joint name="torso_pan_joint" value="0" />
