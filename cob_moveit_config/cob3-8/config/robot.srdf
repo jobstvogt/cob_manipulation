@@ -44,13 +44,13 @@
         <joint name="arm_7_joint" value="0.19" />
     </group_state>
     <group_state name="lookat" group="arm">
-        <joint name="arm_1_joint" value="1.2846" />
-        <joint name="arm_2_joint" value="1.6753" />
-        <joint name="arm_3_joint" value="0.5278" />
-        <joint name="arm_4_joint" value="1.2922" />
-        <joint name="arm_5_joint" value="-0.8796" />
-        <joint name="arm_6_joint" value="1.4757" />
-        <joint name="arm_7_joint" value="0.19" />
+        <joint name="arm_1_joint" value="-1.29" />
+        <joint name="arm_2_joint" value="-1.65" />
+        <joint name="arm_3_joint" value="-0.55" />
+        <joint name="arm_4_joint" value="-1.35" />
+        <joint name="arm_5_joint" value="0.86" />
+        <joint name="arm_6_joint" value="-1.45" />
+        <joint name="arm_7_joint" value="0.18" />
     </group_state>
     <group_state name="home" group="arm">
         <joint name="arm_1_joint" value="0" />

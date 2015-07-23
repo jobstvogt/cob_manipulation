@@ -16,5 +16,5 @@ sensors:
    skip_horizontal_pixels: 1
    shadow_threshold: 0.2
    padding_scale: 5.0
-   padding_offset: 0.03
+   padding_offset: 0.05
    filtered_cloud_topic: output_cloud
